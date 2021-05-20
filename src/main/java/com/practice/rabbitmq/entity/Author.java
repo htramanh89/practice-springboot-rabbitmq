@@ -12,21 +12,21 @@ import javax.persistence.*;
 @Table (name = "author")
 public class Author {
     @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "username")
+    @Column(name = "username", nullable = false)
     private String userName;
 
-    @Column(name = "password")
-    private String passWord;
+    @Column(name = "password", nullable = false)
+    private String password;
 
     @Column(name = "active")
     private boolean isActive;
 
-    public Author (String userName, String passWord, boolean isActive) {
+    public Author (String userName, String password, boolean isActive) {
         this.userName = userName;
-        this.passWord = passWord;
+        this.password = password;
         this.isActive = isActive;
     }
 }

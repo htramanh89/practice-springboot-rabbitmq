@@ -17,7 +17,7 @@
         </tr>
         <tr th:each="author : ${authors}">
             <td th:text="${author.userName}"></td>
-            <td th:text="${author.passWord}"></td>
+            <td th:text="${author.password}"></td>
             <td th:text="${author.isActive}"></td>
             <td>
                 <a th:href="@{~/index.html}" class="btn btn-primary">Edit</a>
