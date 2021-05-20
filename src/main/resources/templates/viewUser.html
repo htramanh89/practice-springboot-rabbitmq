@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.springframework.org/schema/data/jaxb">
+<head>
+    <title>User List</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link type="text/css" rel="stylesheet" href="bootstrap.min.css" th:href="@{bootstrap.min.css}"/>
+</head>
+<body>
+<div class="col-3"></div>
+<div class="container col-6">
+    <h1>Manage Author</h1>
+    <table class="table table-active">
+        <tr>
+            <th>Username</th>
+            <th>Password</th>
+            <th>Active</th>
+        </tr>
+        <tr th:each="author : ${authors}">
+            <td th:text="${author.userName}"></td>
+            <td th:text="${author.passWord}"></td>
+            <td th:text="${author.isActive}"></td>
+            <td>
+                <a th:href="@{~/index.html}" class="btn btn-primary">Edit</a>
+                <a th:href="@{~/index.html}" class="btn btn-danger">Delete</a>
+            </td>
+        </tr>
+    </table>
+    <a href="index.html" class="btn btn-success">Add User</a>
+</div>
+</body>
+</html>
