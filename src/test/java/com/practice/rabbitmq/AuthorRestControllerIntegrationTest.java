@@ -8,6 +8,7 @@ import net.minidev.json.JSONUtil;
 import org.h2.util.json.JSONObject;
 import org.h2.util.json.JSONString;
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -79,6 +80,20 @@ public class AuthorRestControllerIntegrationTest {
         List<Author> authors = authorRepository.findAll();
         assertEquals(authors.size(), 2);
         assertThat(authors).extracting(Author::getUserName).containsExactly("author1", "author_test");
+    }
+
+    @Test
+    public void shouldReturnHTTP500ErrorWhenPostingRequestWithNullUserName() {
+        try {
+            mvc.perform(post("/author/save")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content("{\"password\": \"author\", \"active\": true }"))
+                    .andExpect(status().is5xxServerError());
+        }
+        catch (Exception exception) {
+            Assert.assertTrue("Should throw PropertyValueException about not-null value ",
+                    exception.getMessage().contains("PropertyValueException"));
+        }
     }
 
     private void createTestAuthor() {
