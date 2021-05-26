@@ -25,7 +25,7 @@ public class MessageConsumerConfiguration {
         return BindingBuilder
                 .bind(queue)
                 .to(receiverExchange)
-                .with("send.message");
+                .with("message.*");
     }
 
     @Bean

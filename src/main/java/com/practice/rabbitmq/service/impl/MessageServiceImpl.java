@@ -25,11 +25,14 @@ public class MessageServiceImpl implements MessageService {
         this.topicExchange = senderExchange;
     }
 
-    public void sendMessage(String message) {
-        String routingKey = "send.message";
+    public void sendGetAllMessages(String message) {
+        String routingKey = "message.getAll";
         rabbitTemplate.convertAndSend(topicExchange.getName(), routingKey, message);
     }
 
+    public void sendGetMessagesByAuthor(String message) {
+        rabbitTemplate.convertAndSend(topicExchange.getName(), "message.getAllByAuthor", message);
+    }
 
     @Override
     public List<Message> getAllMessages() {
@@ -38,7 +41,7 @@ public class MessageServiceImpl implements MessageService {
 
     @Override
     public List<Message> getMessagesByAuthor(Long authorId) {
-        return null;
+        return messageRepository.getMessagesByAuthorId(authorId);
     }
 
     @Override

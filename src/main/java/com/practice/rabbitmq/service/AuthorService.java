@@ -8,6 +8,7 @@ import java.util.Optional;
 
 public interface AuthorService {
     List<Author> getAllAuthors();
+    Author getAuthorByUserName(String userName);
     Author saveAuthor (Author author);
     void deleteAuthor (Long id);
 

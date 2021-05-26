@@ -20,11 +20,17 @@ public class AuthorRestController {
         return authorRepository.findAll();
     }
 
-    @PostMapping(path="/save")
+    @PostMapping(path = "/save")
     public ResponseEntity<Author> saveNewAuthor (@RequestBody Author author) {
             System.out.println(author.getUserName());
             Author _author = authorRepository
                     .save(new Author(author.getUserName(), author.getPassword(), author.isActive()));
             return new ResponseEntity<>(_author, HttpStatus.CREATED);
+    }
+
+    @GetMapping(path = "/get")
+    @ResponseBody
+    Author getAuthorInfo(@RequestParam(name = "username") String userName) {
+        return authorRepository.findAuthorByUserName(userName);
     }
 }

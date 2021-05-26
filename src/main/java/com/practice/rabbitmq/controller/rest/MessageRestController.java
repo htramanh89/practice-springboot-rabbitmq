@@ -6,9 +6,9 @@ import com.practice.rabbitmq.repository.MessageRepository;
 import com.practice.rabbitmq.service.impl.MessageServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/message")
@@ -17,8 +17,15 @@ public class MessageRestController {
     private MessageServiceImpl messageService;
 
     @GetMapping("/getAll")
-    public void sendMessageGetAll() {
-        messageService.sendMessage("/getAll");
+    public void getAllMessages() {
+        messageService.sendGetAllMessages("/message/getAll");
+    }
+
+    @GetMapping("/getByAuthor")
+    @ResponseBody
+    public void getMessagesByAuthor(@RequestParam(name = "id") Long authorId) {
+        messageService.sendGetMessagesByAuthor("/message/getByAuthor?id=" + authorId.toString());
+        //return messageService.getMessagesByAuthor(authorId);
     }
 
 }
