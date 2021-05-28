@@ -11,5 +11,5 @@ public interface MessageService {
     Message save(Message message);
     void delete(Long id);
 
-    Optional<Message> findMessageById(Long id);
+    Message findMessageById(Long id);
 }

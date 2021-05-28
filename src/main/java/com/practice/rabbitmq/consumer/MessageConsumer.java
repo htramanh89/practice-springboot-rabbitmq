@@ -9,7 +9,19 @@ public class MessageConsumer {
     private MessageRepository messageRepository;
 
     @RabbitListener(queues="messageServiceQueue")
-    public void receive(String message) {
+    public String receive(String message) {
         System.out.println("Received message: " + message);
+        if(message.contains("id")) {
+            Long id = Long.parseLong(message.substring(message.indexOf("=") + 1));
+            return messageRepository.getMessagesByAuthorId(1L).get(0).toString();
+        }
+        else if(message.contains("getAll")) {
+            return messageRepository.findAll().toString();
+        } else if(message.contains("authorId")) {
+            Long authorId = Long.parseLong(message.substring(message.indexOf("=") + 1));
+            return messageRepository.getMessagesByAuthorId(authorId).toString();
+        }
+
+        return "Received message: " + message;
     }
 }

@@ -25,13 +25,17 @@ public class MessageServiceImpl implements MessageService {
         this.topicExchange = senderExchange;
     }
 
-    public void sendGetAllMessages(String message) {
-        String routingKey = "message.getAll";
-        rabbitTemplate.convertAndSend(topicExchange.getName(), routingKey, message);
-    }
-
-    public void sendGetMessagesByAuthor(String message) {
-        rabbitTemplate.convertAndSend(topicExchange.getName(), "message.getAllByAuthor", message);
+    public String sendGetRequest(String message) {
+        String routingKey = "";
+        if (message.contains("getAll")) {
+            routingKey = "message.getAll";
+        } else if(message.contains("getOne")) {
+            routingKey = "message.getOne";
+        } else if(message.contains("getByAuthor")) {
+            routingKey = "message.getByAuthor";
+       }
+       message = message.substring(message.indexOf('?') + 1);
+       return (String) rabbitTemplate.convertSendAndReceive(topicExchange.getName(), routingKey, message);
     }
 
     @Override
@@ -55,7 +59,7 @@ public class MessageServiceImpl implements MessageService {
     }
 
     @Override
-    public Optional<Message> findMessageById(Long id) {
-        return messageRepository.findById(id);
+    public Message findMessageById(Long id) {
+        return messageRepository.getOne(id);
     }
 }

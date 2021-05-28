@@ -1,5 +1,8 @@
 package com.practice.rabbitmq.entity;
 
+import com.fasterxml.jackson.annotation.JsonValue;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -12,6 +15,7 @@ import java.sql.Timestamp;
 @NoArgsConstructor
 @Entity
 @Table(name = "message")
+@JsonDeserialize(using = MessageDeserializer.class)
 public class Message {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
@@ -26,9 +30,22 @@ public class Message {
     @Column(name = "created_at")
     private Timestamp createdAt;
 
-    public Message (Long authorId, String content, Timestamp createdAt) {
+    public Message (Long id, Long authorId, String content, Timestamp createdAt) {
+        this.id = id;
         this.authorId = authorId;
         this.content = content;
         this.createdAt = createdAt;
     }
+
+    @Override
+    @JsonValue
+    public String toString() {
+        return "{" +
+                "\"id\":" + id +
+                ", \"authorId\":" + authorId +
+                ", \"content\":\"" + content + "\"" +
+                ", \"createdAt\":\"" + createdAt + "\"" +
+                "}";
+    }
+
 }
