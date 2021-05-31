@@ -1,5 +1,9 @@
 package com.practice.rabbitmq.consumer;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.practice.rabbitmq.entity.Message;
+import com.practice.rabbitmq.entity.MessageDeserializer;
 import com.practice.rabbitmq.repository.MessageRepository;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,20 +12,25 @@ public class MessageConsumer {
     @Autowired
     private MessageRepository messageRepository;
 
-    @RabbitListener(queues="messageServiceQueue")
-    public String receive(String message) {
+    @RabbitListener(queues="messageGetServiceQueue")
+    public String receiveGetRequest(String message) {
         System.out.println("Received message: " + message);
         if(message.contains("id")) {
-            Long id = Long.parseLong(message.substring(message.indexOf("=") + 1));
-            return messageRepository.getMessagesByAuthorId(1L).get(0).toString();
-        }
-        else if(message.contains("getAll")) {
+            Long id = 1L;//Long.parseLong(message.substring(message.indexOf("=") + 1));
+            return messageRepository.getOne(id).toString();
+        } else if(message.contains("getAll")) {
             return messageRepository.findAll().toString();
         } else if(message.contains("authorId")) {
             Long authorId = Long.parseLong(message.substring(message.indexOf("=") + 1));
             return messageRepository.getMessagesByAuthorId(authorId).toString();
         }
-
         return "Received message: " + message;
     }
+
+    @RabbitListener(queues="messagePostServiceQueue")
+    public String receivePostRequest(String message) throws JsonProcessingException {
+        System.out.println( "Received Post message: " + message);
+        return messageRepository.save(new ObjectMapper().readValue(message, Message.class)).toString();
+    }
+
 }

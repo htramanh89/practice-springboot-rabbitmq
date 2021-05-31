@@ -1,14 +1,20 @@
 package com.practice.rabbitmq.entity;
 
-import com.fasterxml.jackson.annotation.JsonValue;
-import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.SneakyThrows;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -37,15 +43,16 @@ public class Message {
         this.createdAt = createdAt;
     }
 
-    @Override
-    @JsonValue
-    public String toString() {
-        return "{" +
-                "\"id\":" + id +
-                ", \"authorId\":" + authorId +
-                ", \"content\":\"" + content + "\"" +
-                ", \"createdAt\":\"" + createdAt + "\"" +
-                "}";
+    public Message (Long authorId, String content) {
+        this.authorId = authorId;
+        this.content = content;
+        this.createdAt = Timestamp.valueOf(LocalDateTime.now());
     }
 
+    @SneakyThrows
+    @Override
+    public String toString() {
+        ObjectMapper mapper = new ObjectMapper();
+        return mapper.writeValueAsString(this);
+    }
 }

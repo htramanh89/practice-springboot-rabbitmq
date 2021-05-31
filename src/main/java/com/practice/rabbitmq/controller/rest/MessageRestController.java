@@ -1,15 +1,20 @@
 package com.practice.rabbitmq.controller.rest;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.practice.rabbitmq.entity.Message;
-import com.practice.rabbitmq.entity.MessageDeserializer;
-import com.practice.rabbitmq.producer.MessageProducerConfiguration;
-import com.practice.rabbitmq.repository.MessageRepository;
 import com.practice.rabbitmq.service.impl.MessageServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.handler.annotation.Payload;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -20,8 +25,10 @@ public class MessageRestController {
     private MessageServiceImpl messageService;
 
     @GetMapping("/getAll")
-    public String getAllMessages() {
-        return messageService.sendGetRequest("getAll");
+    public List<Message> getAllMessages() throws JsonProcessingException {
+        String result = messageService.sendGetRequest("getAll");
+        List<Message> messages = new ObjectMapper().readValue(result, new TypeReference<List<Message>>() {});
+        return messages;
     }
 
     @GetMapping("/get")
@@ -31,8 +38,16 @@ public class MessageRestController {
     }
 
     @GetMapping("/getByAuthor")
-    public String getMessagesByAuthor(@RequestParam(name = "authorId") Long authorId) {
-        return messageService.sendGetRequest("getByAuthor?authorId=" + authorId.toString());
+    public List<Message> getMessagesByAuthor(@RequestParam(name = "authorId") Long authorId) throws JsonProcessingException {
+        String result = messageService.sendGetRequest("getByAuthor?authorId=" + authorId.toString());
+        List<Message> messages = new ObjectMapper().readValue(result, new TypeReference<List<Message>>() {});
+        return messages;
     }
 
+    @PostMapping("/save")
+    public ResponseEntity<Message> save(@RequestBody String message) throws JsonProcessingException {
+        System.out.println("Sending... :" + message.toString());
+        String result = messageService.sendPostRequest(message);
+        return new ResponseEntity<> (new ObjectMapper().readValue(result, Message.class), HttpStatus.CREATED);
+    }
 }

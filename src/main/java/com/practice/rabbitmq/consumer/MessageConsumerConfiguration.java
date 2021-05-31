@@ -16,14 +16,27 @@ public class MessageConsumerConfiguration {
     }
 
     @Bean
-    public Queue queue() {
-        return new Queue("messageServiceQueue");
+    public Queue queueGetRequest() {
+        return new Queue("messageGetServiceQueue");
     }
 
     @Bean
-    public Binding binding(Queue queue, TopicExchange receiverExchange) {
+    public Queue queuePostRequest() {
+        return new Queue("messagePostServiceQueue");
+    }
+
+    @Bean
+    public Binding bindingGet(Queue queueGetRequest, TopicExchange receiverExchange) {
         return BindingBuilder
-                .bind(queue)
+                .bind(queueGetRequest)
+                .to(receiverExchange)
+                .with("message.*");
+    }
+
+    @Bean
+    public Binding bindingPost(Queue queuePostRequest, TopicExchange receiverExchange) {
+        return BindingBuilder
+                .bind(queuePostRequest)
                 .to(receiverExchange)
                 .with("message.*");
     }
