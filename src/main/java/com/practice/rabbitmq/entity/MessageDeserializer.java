@@ -19,10 +19,17 @@ public class MessageDeserializer extends StdDeserializer<Message> {
     @Override
     public Message deserialize(JsonParser p, DeserializationContext ctxt) throws IOException{
         JsonNode node = p.getCodec().readTree(p);
-        Long id =  (node.get("id")).numberValue().longValue();
-        Long authorId = (node.get("authorId")).numberValue().longValue();
-        String content = node.get("content").asText();
-        Timestamp createdAt = new Timestamp(node.get("createdAt").longValue());
-        return new Message(id, authorId, content, createdAt);
+        if(node.get("id") == null) {
+            Long authorId = (node.get("authorId")).numberValue().longValue();
+            String content = node.get("content").asText();
+            return new Message(authorId, content);
+        }
+        else {
+            Long id =  (node.get("id")).numberValue().longValue();
+            Long authorId = (node.get("authorId")).numberValue().longValue();
+            String content = node.get("content").asText();
+            Timestamp createdAt = new Timestamp(node.get("createdAt").longValue());
+            return new Message(id, authorId, content, createdAt);
+        }
     }
 }

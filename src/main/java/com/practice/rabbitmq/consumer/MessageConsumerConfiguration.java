@@ -30,7 +30,7 @@ public class MessageConsumerConfiguration {
         return BindingBuilder
                 .bind(queueGetRequest)
                 .to(receiverExchange)
-                .with("message.*");
+                .with("message.get.*");
     }
 
     @Bean
@@ -38,7 +38,7 @@ public class MessageConsumerConfiguration {
         return BindingBuilder
                 .bind(queuePostRequest)
                 .to(receiverExchange)
-                .with("message.*");
+                .with("message.save");
     }
 
     @Bean

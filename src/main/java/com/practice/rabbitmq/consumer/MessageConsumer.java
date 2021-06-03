@@ -1,9 +1,9 @@
 package com.practice.rabbitmq.consumer;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.practice.rabbitmq.entity.Message;
-import com.practice.rabbitmq.entity.MessageDeserializer;
 import com.practice.rabbitmq.repository.MessageRepository;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +16,7 @@ public class MessageConsumer {
     public String receiveGetRequest(String message) {
         System.out.println("Received message: " + message);
         if(message.contains("id")) {
-            Long id = 1L;//Long.parseLong(message.substring(message.indexOf("=") + 1));
+            Long id = Long.parseLong(message.substring(message.indexOf("=") + 1));
             return messageRepository.getOne(id).toString();
         } else if(message.contains("getAll")) {
             return messageRepository.findAll().toString();
@@ -29,8 +29,8 @@ public class MessageConsumer {
 
     @RabbitListener(queues="messagePostServiceQueue")
     public String receivePostRequest(String message) throws JsonProcessingException {
-        System.out.println( "Received Post message: " + message);
-        return messageRepository.save(new ObjectMapper().readValue(message, Message.class)).toString();
+        ObjectMapper mapper = new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        return messageRepository.save(mapper.readValue(message, Message.class)).toString();
     }
 
 }

@@ -7,12 +7,10 @@ import org.springframework.amqp.core.TopicExchange;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
-@Transactional
 public class MessageServiceImpl implements MessageService {
     private final RabbitTemplate rabbitTemplate;
     private final TopicExchange topicExchange;
@@ -28,13 +26,13 @@ public class MessageServiceImpl implements MessageService {
     public String sendGetRequest(String message) {
         String routingKey = "";
         if (message.contains("getAll")) {
-            routingKey = "message.getAll";
+            routingKey = "message.get.All";
         } else if(message.contains("getOne")) {
-            routingKey = "message.getOne";
+            routingKey = "message.get.One";
         } else if(message.contains("getByAuthor")) {
-            routingKey = "message.getByAuthor";
+            routingKey = "message.get.ByAuthor";
         } else if(message.contains("getByAuthor")) {
-            routingKey = "message.getByAuthor";
+            routingKey = "message.get.ByAuthor";
         }
        message = message.substring(message.indexOf('?') + 1);
        return (String) rabbitTemplate.convertSendAndReceive(topicExchange.getName(), routingKey, message);

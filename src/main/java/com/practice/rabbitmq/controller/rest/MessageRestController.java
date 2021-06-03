@@ -8,7 +8,6 @@ import com.practice.rabbitmq.service.impl.MessageServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -46,7 +45,6 @@ public class MessageRestController {
 
     @PostMapping("/save")
     public ResponseEntity<Message> save(@RequestBody String message) throws JsonProcessingException {
-        System.out.println("Sending... :" + message.toString());
         String result = messageService.sendPostRequest(message);
         return new ResponseEntity<> (new ObjectMapper().readValue(result, Message.class), HttpStatus.CREATED);
     }
