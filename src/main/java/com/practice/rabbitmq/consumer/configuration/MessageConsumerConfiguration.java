@@ -1,5 +1,6 @@
-package com.practice.rabbitmq.consumer;
+package com.practice.rabbitmq.consumer.configuration;
 
+import com.practice.rabbitmq.consumer.MessageConsumer;
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.Exchange;
 import org.springframework.amqp.core.Queue;

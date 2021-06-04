@@ -1,8 +1,6 @@
-package com.practice.rabbitmq.producer;
+package com.practice.rabbitmq.service.producer;
 
 import com.practice.rabbitmq.service.MessageService;
-import com.practice.rabbitmq.service.impl.MessageServiceImpl;
-import org.springframework.amqp.core.Exchange;
 import org.springframework.amqp.core.TopicExchange;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.context.annotation.Bean;
@@ -17,6 +15,6 @@ public class MessageProducerConfiguration {
 
     @Bean
     public MessageService sendMessage(RabbitTemplate rabbitTemplate, TopicExchange senderExchange) {
-        return new MessageServiceImpl(rabbitTemplate, senderExchange);
+        return new MessageService(rabbitTemplate, senderExchange);
     }
 }

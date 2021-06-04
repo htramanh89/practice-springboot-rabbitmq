@@ -29,7 +29,7 @@ public class MessageConsumer {
 
     @RabbitListener(queues="messagePostServiceQueue")
     public String receivePostRequest(String message) throws JsonProcessingException {
-        ObjectMapper mapper = new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        ObjectMapper mapper = new ObjectMapper();//.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         return messageRepository.save(mapper.readValue(message, Message.class)).toString();
     }
 

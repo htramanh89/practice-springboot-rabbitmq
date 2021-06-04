@@ -4,7 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.practice.rabbitmq.entity.Message;
-import com.practice.rabbitmq.service.impl.MessageServiceImpl;
+import com.practice.rabbitmq.service.MessageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +21,7 @@ import java.util.List;
 @RequestMapping("/message")
 public class MessageRestController {
     @Autowired
-    private MessageServiceImpl messageService;
+    private MessageService messageService;
 
     @GetMapping("/getAll")
     public List<Message> getAllMessages() throws JsonProcessingException {

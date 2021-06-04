@@ -1,8 +1,9 @@
 package com.practice.rabbitmq.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.practice.rabbitmq.entity.deserializer.MessageDeserializer;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -23,6 +24,7 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "message")
 @JsonDeserialize(using = MessageDeserializer.class)
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Message {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
