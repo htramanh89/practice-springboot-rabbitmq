@@ -1,6 +1,10 @@
 package com.practice.rabbitmq.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.practice.rabbitmq.entity.deserializer.AuthorDeserializer;
@@ -10,6 +14,7 @@ import lombok.Setter;
 import lombok.SneakyThrows;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Getter @Setter @NoArgsConstructor
 @Entity
@@ -29,6 +34,9 @@ public class Author {
     @Column(name = "active")
     private boolean isActive;
 
+    @OneToMany (mappedBy = "author", fetch = FetchType.EAGER)
+    private List<Message> messages;
+
     public Author (String userName, String password, boolean isActive) {
         this.userName = userName;
         this.password = password;
@@ -39,6 +47,6 @@ public class Author {
     @Override
     public String toString() {
         ObjectMapper mapper = new ObjectMapper();
-        return mapper.writeValueAsString(this);
+        return mapper.writerWithDefaultPrettyPrinter().writeValueAsString(this);
     }
 }

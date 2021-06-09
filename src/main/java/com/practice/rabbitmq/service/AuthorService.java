@@ -33,4 +33,8 @@ public class AuthorService {
     public Optional<Author> findAuthorById(Long id) {
         return authorRepository.findById(id);
     }
+
+    public Author getOne(Long id) {
+        return authorRepository.getOne(id);
+    }
 }

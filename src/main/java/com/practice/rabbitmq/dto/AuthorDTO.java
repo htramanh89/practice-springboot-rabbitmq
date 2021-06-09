@@ -1,0 +1,4 @@
+package com.practice.rabbitmq.dto;
+
+public class AuthorDTO {
+}

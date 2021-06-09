@@ -28,14 +28,9 @@ public class Event {
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "message_id", referencedColumnName = "id")
-    private Message message;
-
-    public Event (long id, Message message) {
-        this.id = id;
-        this.message = new Message(message.getId(), message.getAuthorId(), message.getContent(), message.getCreatedAt());
-    }
+   /* @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "message_id")
+    private Message message;*/
 
     @SneakyThrows
     @Override
