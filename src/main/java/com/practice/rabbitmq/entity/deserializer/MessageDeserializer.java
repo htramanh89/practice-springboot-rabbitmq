@@ -4,14 +4,9 @@ import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import com.practice.rabbitmq.entity.Author;
 import com.practice.rabbitmq.entity.Message;
-import com.practice.rabbitmq.repository.AuthorRepository;
-import com.practice.rabbitmq.repository.MessageRepository;
-import com.practice.rabbitmq.service.AuthorService;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.IOException;
 import java.sql.Timestamp;

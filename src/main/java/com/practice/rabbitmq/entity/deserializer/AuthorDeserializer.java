@@ -3,7 +3,6 @@ package com.practice.rabbitmq.entity.deserializer;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import com.practice.rabbitmq.entity.Author;
@@ -11,16 +10,11 @@ import com.practice.rabbitmq.entity.Author;
 import java.io.IOException;
 
 public class AuthorDeserializer extends StdDeserializer<Author> {
-    protected AuthorDeserializer(Class<?> vc) {
+    public AuthorDeserializer() {
+        this(null);
+    }
+    public AuthorDeserializer(Class<?> vc) {
         super(vc);
-    }
-
-    protected AuthorDeserializer(JavaType valueType) {
-        super(valueType);
-    }
-
-    protected AuthorDeserializer(StdDeserializer<?> src) {
-        super(src);
     }
 
     @Override

@@ -17,5 +17,23 @@
       "password": "author7",
       "active": true
   }' http://localhost:8080/author/save``
+
+- /GET to view all messages
   
+``curl -i -H "Accept: application/json" -H "Content-Type: application/json" -X GET  http://localhost:8080/message/getAll``
+
+- /GET to view a message with given id
  
+``curl -i -H "Accept: application/json" -H "Content-Type: application/json" -X GET  http://localhost:8080/message/get?id=3``
+
+- /GET to view the messages of a given author
+
+``curl -i -H "Accept: application/json" -H "Content-Type: application/json" -X GET  http://localhost:8080/message/getByAuthor?authorId=1``
+
+- POST to save a message to DB
+
+``curl -H "Accept: application/json" -H "Content-type: application/json" -X POST -d '{
+"authorId": 3,
+"content": "msg 11"
+}' http://localhost:8080/author/save
+``
