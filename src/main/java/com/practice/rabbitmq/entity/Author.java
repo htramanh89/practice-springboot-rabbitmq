@@ -14,13 +14,14 @@ import lombok.Setter;
 import lombok.SneakyThrows;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.List;
 
 @Getter @Setter @NoArgsConstructor
 @Entity
 @Table (name = "author")
 @JsonDeserialize(using = AuthorDeserializer.class)
-public class Author {
+public class Author implements Serializable {
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;

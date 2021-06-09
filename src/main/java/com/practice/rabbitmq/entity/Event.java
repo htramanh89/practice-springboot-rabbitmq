@@ -16,6 +16,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import java.io.Serializable;
 
 @Getter
 @Setter
@@ -23,7 +24,7 @@ import javax.persistence.Table;
 @Entity
 @JsonDeserialize(using = EventDeserializer.class)
 @Table(name = "event")
-public class Event {
+public class Event implements Serializable {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
