@@ -32,4 +32,16 @@ public class AuthorRestController {
     Author getAuthorInfo(@RequestParam(name = "username") String userName) {
         return authorService.getAuthorByUserName(userName);
     }
+
+    @GetMapping(path = "/getOne")
+    @ResponseBody
+    Author getAuthorInfoById(@RequestParam(name = "id") Long id) {
+        return authorService.getOne(id);
+    }
+
+    @DeleteMapping(path = "/delete")
+    @ResponseBody
+    public void deleteAuthor(@RequestParam(name = "id") Long id) {
+        authorService.deleteAuthor(id);
+    }
 }

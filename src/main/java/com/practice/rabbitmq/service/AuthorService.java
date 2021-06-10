@@ -4,7 +4,10 @@ import com.practice.rabbitmq.entity.Author;
 import com.practice.rabbitmq.repository.AuthorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
@@ -14,9 +17,7 @@ public class AuthorService {
     @Autowired
     private AuthorRepository authorRepository;
 
-    @Cacheable(value = "authors")
     public List<Author> getAllAuthors() {
-        simulateSlowService();
         return authorRepository.findAll();
     }
 
@@ -26,22 +27,23 @@ public class AuthorService {
         return authorRepository.findAuthorByUserName(userName);
     }
 
+    @Caching(put = {
+            @CachePut(value = "author" , key = "#author.id"),
+            @CachePut(value = "author" , key = "#author.userName")
+    })
     public Author saveAuthor(Author author) {
         return authorRepository.save(author);
     }
 
-
+    @CacheEvict(value = "author", key = "#id")
     public void deleteAuthor(Long id) {
         authorRepository.deleteById(id);
     }
 
-    public Optional<Author> findAuthorById(Long id) {
-        return authorRepository.findById(id);
-    }
-
+    @Cacheable(value="author", key = "#id")
     public Author getOne(Long id) {
         simulateSlowService();
-        return authorRepository.getOne(id);
+        return authorRepository.findById(id).get();
     }
 
     private void simulateSlowService() {
